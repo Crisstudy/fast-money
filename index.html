@@ -4,11 +4,35 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cadastro de Clientes</title>
+    <link rel="shortcut icon" href="imagens/favicon-16x16.png" type="image/x-icon">
     <style>
         body {
-            font-family: Arial, Helvetica, sans-serif;
             background-color: rgb(223, 220, 220);
         }
+
+        header {
+            width: 100%;
+            height: 400px;
+            overflow: hidden;
+            position: relative;
+            top: 0;
+            left: 0;
+            z-index: 1000;
+        }
+
+        header img {
+            width: 100%;
+            height: 100%;
+            border: solid 2px black;
+            border-radius: 5px;
+        }
+
+        h2 {
+            font-family: Arial, Helvetica, sans-serif;
+            color: rgb(174, 4, 4);
+            text-align: center;
+        }
+
         form {
             width: 300px;
             background-color: rgb(20, 20, 149);
@@ -29,6 +53,9 @@
     </style>
 </head>
 <body>
+    <header>
+        <img src="imagens/WhatsApp Image 2025-02-25 at 11.00.47 (1).jpeg" alt="logo-fast-money">
+    </header>
     <h2>Cadastro de Clientes <i>Fast Money</i></h2>
     <form id="cadastroForm">
         <input type="text" id="nome" placeholder="Nome completo" required><br>

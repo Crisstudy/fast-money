@@ -124,69 +124,67 @@
         </p>
     </footer>
 
-    <script type="module">
-        // Importa o Firebase
-        import { initializeApp }
+    <script>
+    const CLIENT_ID = '392089098491-fr563noo1flu954rl8ignt4g79eekitg.apps.googleusercontent.com';
+        const API_KEY = 'AIzaSyABtvVYDU7ouDXrk3gqRwINB_LS9u7H8A0';
+        const SPREADSHEET_ID = '1DlKoPnSGZKOCLvOd6CzupD3LqzkAjaqeVFwKC3YM15E';
+        const RANGE = 'Página1!A:j';   
+        
+        // carregar a API
+        function loadClient() {
+            gapi.client.init({
+                apiKey: API_KEY,
+                clientId: CLIENT_ID,
+                discoveryDocs: ["https://sheets.googleapis.com/$discovery/rest?version=v4"],
+                scope: "https://www.googleapis.com/auth/spreadsheets"
+            }).then(() => {
+                console.log("Google API carregada");
+            });
+        }   
 
-    from
-    "https://www.gstatic.com/firebasejs/10.0.0/firebase-app.js";
-        import { getDatabase, ref, push } from
-    "https://www.gstatic.com/firebasejs/10.0.0/firebase-database.js";
+        //Autenticação
+        function authenticate() {
+            return gapi.auth2.getAuthInstance().signIn({ prompt: "consent" });
+        }
 
-        // Configuração do Firebase
-        const firebaseConfig = {
-            apiKey: "SUA_API_KEY", 
-            authDomain:
-        "SEU_DOMINIO.firebaseapp.com",
-            databaseURL:
-        "https://SEU_PROJETO.firebaseio.com",
-            projectId:
-        "SEU_PROJETO",
-            storageBucket: 
-        "SEU_BUCKET.appspot.com",
-            messagingSenderId: 
-        "SEU_ID",
-            appId: "SUA_APP_ID"
-        };
+        function onLoad() {
+            gapi.load("client:auth2", loadClient);
+        }
 
-        // Inicializa o Firebase
-        const app = 
-    initializeApp(firebaseConfig);
-        const database = 
-    getDatabase(app);
+        // Submissão do formulário
+        document.getElementById("cadastroForm").addEventListener("submit", async (e) => {
+            e.preventDefault();
+            await authenticate();
 
-    document.getElementById("cadastroForm").addEventListener("submit", function(event) {
-        event.preventDefault();
-        const nome = 
-    document.getElementById("nome").value;
-        const email = 
-    document.getElementById("email").value;
-        const telefone = 
-    document.getElementById("telefone").value;
-        const CPF =
-    document.getElementById("cpf").value;
-        const endereco =
-    document.getElementById("end").value;
-        const cep = 
-    document.getElementById("cep").value;
-    
-        push(ref(database,"clientes/"), {
-            nome: nome,
-            email: email,
-            telefone: telefone,
-            cpf: cpf,
-            endereco: endereco,
-            cep: cep
-        }).then(() => {
-            alert("Cadastro realizado com sucesso!");
-        }).catch(error => {
-            alert("Erro ao cadastrar: " + error.message);
-        })
-        document.getElementById("meuFormulario").addEventListener("submit", function(event) {
-  // Enviar dados para o servidor
-  alert("Dados enviados com segurança!");
-});
+            const name = document.getElementById("nome").value;
+            const email = document.getElementById("email").value;
+            const telefone = document.getElementById("telefone").value;
+            const CPF = document.getElementById("cpf").value;
+            const endereco = document.getElementById("end").value;
+            const cep = document.getElementById("cep").value;
+
+            const values = [[nome, email, telefone, cpf, endereco, cep]]
+            const body = {values: values};
+
+            gapi.client.sheets.spreadsheets.values.append({
+                spreadsheetId: SPREADSHEET_ID,
+                range: RANGE,
+                valueInputOption: "RAW",
+                insertDataOption: "INSERT_ROWS",
+                resource: body
+            }).then((response) => {
+                alert("Dados enviados!");
+                console.log(response);
+            }, (error) => {
+                alert("Erro ao enviar dados: " + error.result.error.mensage);
+            });    
+
+        document.getElementById("cadastroForm").addEventListener("submit", function(event) {
+        // Enviar dados para o servidor
+            alert("Dados enviados com segurança!");
+        });
     });
     </script>
+    <script async defer src="https://apis.google.com/js/api.js" onload="onLoad()"></script>
 </body>
 </html>

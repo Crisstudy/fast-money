@@ -163,7 +163,7 @@
             const endereco = document.getElementById("end").value;
             const cep = document.getElementById("cep").value;
 
-            const values = [[nome, email, telefone, cpf, endereco, cep]]
+            const values = [[name, email, telefone, CPF, endereco, cep]]
             const body = {values: values};
 
             gapi.client.sheets.spreadsheets.values.append({
@@ -176,14 +176,9 @@
                 alert("Dados enviados!");
                 console.log(response);
             }, (error) => {
-                alert("Erro ao enviar dados: " + error.result.error.mensage);
+                alert("Erro ao enviar dados: " + error.result.error.message);
             });    
-
-        document.getElementById("cadastroForm").addEventListener("submit", function(event) {
-        // Enviar dados para o servidor
-            alert("Dados enviados com segurança!");
         });
-    });
     </script>
     <script async defer src="https://apis.google.com/js/api.js" onload="onLoad()"></script>
 </body>
